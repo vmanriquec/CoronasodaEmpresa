@@ -2,12 +2,18 @@ package com.coronasoda.coronasodaempresa.adaptadores;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.content.Context;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +22,7 @@ import com.coronasoda.coronasodaempresa.MainActivity;
 import com.coronasoda.coronasodaempresa.R;
 import com.coronasoda.coronasodaempresa.modelos.PedidoRealmFirebase;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +31,7 @@ private Context mainContext;
         String foto;
         SharedPreferences prefs;
         String FileName ="myfile";
+    View v;
 
 public ArrayList<PedidoRealmFirebase> items;
 public Adaptadorrecibepedidos(ArrayList<PedidoRealmFirebase> items, MainActivity contexto){
@@ -41,7 +49,7 @@ static class AdaptadorViewHolder extends RecyclerView.ViewHolder{
     protected TextView vuelto;
     protected TextView telefono;
     protected Button aceptar;
-    protected Button rechazar;
+    protected Button rechazar,watsapp;
     public AdaptadorViewHolder(View v){
         super(v);
         this.direccion=(TextView) v.findViewById(R.id.direccion);
@@ -51,6 +59,7 @@ static class AdaptadorViewHolder extends RecyclerView.ViewHolder{
         this.cuantodaelcliente=(TextView) v.findViewById(R.id.cuantopaga);
         this.vuelto=(TextView) v.findViewById(R.id.vuelto);
         this.telefono=(TextView) v.findViewById(R.id.telefono);
+        this.watsapp=(Button) v.findViewById(R.id.watsapp);
 
     }
 }
@@ -75,6 +84,21 @@ static class AdaptadorViewHolder extends RecyclerView.ViewHolder{
         viewHolder.vuelto.setText(String.valueOf(item.getVuelto()));
         viewHolder.telefono.setText(String.valueOf(item.getTelefono()));
 
+viewHolder.watsapp.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        String number=viewHolder.telefono.getText().toString();
+
+        Uri uri = Uri.parse("smsto:" + number);
+        Intent i = new Intent(Intent.ACTION_SENDTO, uri);
+        i.setPackage("com.whatsapp");
+        mainContext.startActivity(i);
+
+
+
+
+    }
+});
 
 
       /*  viewHolder.eliminar.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +132,9 @@ mainContext.calculatotal();
             }
         });
     */
+
     }
+
 
 
     @Override

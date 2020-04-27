@@ -1,5 +1,7 @@
 package com.coronasoda.coronasodaempresa.ui.home;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
 
 public class HomeFragment extends Fragment {
      private HomeViewModel homeViewModel;
@@ -64,7 +67,17 @@ firebaseDatabase.getReference().child("PEDIDOS").addValueEventListener(new Value
 
         adaptador.notifyDataSetChanged();
 
+
+
+
+        MediaPlayer  mMediaPlayer = MediaPlayer.create(getContext(), R.raw.voz);
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.start();
+     // MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.voz.mp3);
+      //mediaPlayer.start();
     }
+
+
 
     @Override
     public void onCancelled(@NonNull DatabaseError databaseError) {
